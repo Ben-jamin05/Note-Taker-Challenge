@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 
+const PORT = process.env.PORT || 3001;
+
 app.use(express.static("public"));
 
 app.get('/notes', (req, res) => {
@@ -69,3 +71,5 @@ app.post('/api/notes', (req, res) => {
         res.status(500).json("Error in posting the note");
     }
 });
+
+app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
