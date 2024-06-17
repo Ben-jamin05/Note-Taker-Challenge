@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 const path = require('path');
-const uuid = require("./Develop/helpers/uuid.js");
 const { randomUUID } = require('crypto');
 
 const PORT = process.env.PORT || 3001;
@@ -12,11 +11,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, './Develop/public/notes.html'))
+    res.sendFile(path.join(__dirname, './public/notes.html'))
 });
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, './Develop/public/index.html'))
+    res.sendFile(path.join(__dirname, './public/index.html'))
 });
 
 app.get('/api/notes', (req, res) => {
@@ -55,19 +54,18 @@ app.post('/api/notes', (req, res) => {
         const notesString = JSON.stringify(parsedNotes, null, 2);
 
         fs.writeFile(`./db/db.json`, notesString, (err) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ error: 'Failed to write note to file' });
-            }
-            console.log(`Note for ${newNote.title} has been written to JSON file`);
-
-            const response = {
-                status: "success",
-                body: newNote,
-            };
-
-            res.status(201).json(response);
+            err
+            ? console.error(err)
+            : console.log(
+                `Note for ${newNote.title} has been written to JSON file`
+            )
         });
+        const response = {
+            status: "success",
+            body: newNote,
+        };
+
+        res.status(201).json(response);
     });
 });
 
