@@ -1,17 +1,18 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
+const path = require('path');
 
 const PORT = process.env.PORT || 3001;
 
 app.use(express.static("public"));
 
 app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, './notes.html'))
+    res.sendFile(path.join(__dirname, './Develop/public/notes.html'))
 });
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, './index.html'))
+    res.sendFile(path.join(__dirname, './Develop/public/index.html'))
 });
 
 app.get('/api/notes', (req, res) => {
