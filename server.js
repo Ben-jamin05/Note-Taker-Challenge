@@ -2,11 +2,13 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 const path = require('path');
-const uuid = require("./helpers/uuid");
+const uuid = require("./Develop/helpers/uuid.js");
+const { randomUUID } = require('crypto');
 
 const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.get('/notes', (req, res) => {
@@ -39,7 +41,7 @@ app.post('/api/notes', (req, res) => {
     const newNote = {
         title,
         text,
-        note_id: uuid(),
+        note_id: randomUUID(),
     };
 
     fs.readFile("./db/db.json", "utf8", (err, data) => {
