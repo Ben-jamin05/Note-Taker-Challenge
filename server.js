@@ -11,11 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, '/notes.html'))
-});
-
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '/index.html'))
+    res.sendFile(path.join(__dirname, '/public/notes.html'))
 });
 
 app.get('/api/notes', (req, res) => {
@@ -40,7 +36,7 @@ app.post('/api/notes', (req, res) => {
     const newNote = {
         title,
         text,
-        note_id: randomUUID(),
+        id: randomUUID(),
     };
 
     fs.readFile("./db/db.json", "utf8", (err, data) => {
@@ -60,13 +56,20 @@ app.post('/api/notes', (req, res) => {
                 `Note for ${newNote.title} has been written to JSON file`
             )
         });
+        /*
         const response = {
             status: "success",
             body: newNote,
         };
+        */
 
-        res.status(201).json(response);
+        //res.status(201).json(response);
+        res.json(newNote);
     });
+});
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '/public/index.html'))
 });
 
 app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
